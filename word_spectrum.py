@@ -10,8 +10,9 @@ import nltk
 from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
 
-# Utils import
-from constants import *
+# Constants import
+from constants import CATEGORIES
+from constants import OUTPUT_DIR
 
 
 ## FUNCTIONS
@@ -20,6 +21,7 @@ def get_word_len_dist(words):
     """Get the distribution of word lengths from a list of words"""
     word_lengths = [len(w) for w in words]
     return FreqDist(word_lengths)
+
 
 def save_graph(fdist, category):
     """Save a graphic representation of the distribution"""
@@ -32,6 +34,7 @@ def save_graph(fdist, category):
     plt.ioff()
 
     print(f"Saved graph in '{filename}'.")
+
 
 def compute_word_spectrum(corpus):
     """Arrange the words using their length and frequency"""
