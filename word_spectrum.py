@@ -35,6 +35,7 @@ def save_graph(fdist, category):
     fdist.plot(15, title=category)
     fig.savefig(filename, bbox_inches = "tight")
     plt.ioff()
+    print(f"Saved graph in '{filename}'.")
 
 def compute_word_spectrum(files):
     """Arrange the words using their length and frequency
