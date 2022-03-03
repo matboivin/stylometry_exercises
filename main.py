@@ -5,17 +5,17 @@
 ### IMPORT
 
 # Utils import
-from load_data import sort_files_per_category
+from load_data import tokenize_corpus
 from word_spectrum import compute_word_spectrum
 
 
 ## FUNCTIONS
 
 def main():
-    # Sort the papers by author and other categories
-    files = sort_files_per_category()
+    # Sort and tokenize all the papers
+    corpus = tokenize_corpus()
     # First approach: Mendenhall’s Characteristic Curves of Composition
-    compute_word_spectrum(files)
+    compute_word_spectrum(corpus)
 
 if __name__ == "__main__":
     main()
