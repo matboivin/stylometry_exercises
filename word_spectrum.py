@@ -24,11 +24,13 @@ def get_word_len_dist(words):
 def save_graph(fdist, category):
     """Save a graphic representation of the distribution"""
     filename = OUTPUT_DIR + "/" + category + ".png"
+
     plt.ion()
     fig = plt.figure(figsize=(12,6))
     fdist.plot(15, title=category)
     fig.savefig(filename, bbox_inches = "tight")
     plt.ioff()
+
     print(f"Saved graph in '{filename}'.")
 
 def compute_word_spectrum(corpus):

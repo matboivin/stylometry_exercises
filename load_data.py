@@ -33,6 +33,7 @@ def combine_files(file_idx):
     for idx in file_idx:
         with open(f"{DATA_DIR}/federalist_{idx}.txt") as f:
             files.append(f.read())
+
     return "\n".join(files)
 
 def sort_files_per_category():
@@ -52,17 +53,20 @@ def sort_files_per_category():
 
     for category,idx in idx_per_category.items():
         files_per_category[category] = combine_files(idx)
+
     return files_per_category
 
 def tokenize_corpus():
     """Tokenize all the corpus"""
     corpus = sort_files_per_category()
     result = {}
+
     for category in CATEGORIES:
         result[category] = nltk.word_tokenize(
             remove_punctuation(corpus[category]),
             language=CORPUS_LANGUAGE
         )
-        # remove number at the beginning of the document
+        # Remove the number at the beginning of the document
         result[category] = result[category][1:]
+
     return result
