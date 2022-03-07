@@ -59,9 +59,8 @@ def sort_files_per_category():
     return files_per_category
 
 
-def tokenize_corpus():
+def tokenize_corpus(corpus):
     """Tokenize all the corpus"""
-    corpus = sort_files_per_category()
     result = {}
 
     for category in CATEGORIES:

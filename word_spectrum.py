@@ -33,7 +33,7 @@ def save_graph(fdist, category):
     fig.savefig(filename, bbox_inches = "tight")
     plt.ioff()
 
-    print(f"Saved graph in '{filename}'.")
+    print(f"Saved graph in '{filename}'")
 
 
 def compute_word_spectrum(corpus):
