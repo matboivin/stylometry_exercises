@@ -6,7 +6,6 @@ __all__ = ["chi_square_test"]
 ### IMPORT
 
 # Utils import
-from constants import CORPUS_LANGUAGE
 from utils import get_n_most_frequent_words_occs
 
 
@@ -19,9 +18,9 @@ def calculate_chisquared(n, text_author, text_unknown):
         text_unknown: Anonymous text
     """
     chisquared = 0
-    combined_corpus = (text_author + text_unknown)
+    combined_corpus = text_author + text_unknown
     words_occs = get_n_most_frequent_words_occs(n, combined_corpus)
-    author_share = (len(text_author) / len(combined_corpus))
+    author_share = len(text_author) / len(combined_corpus)
 
     for word,count in words_occs:
         # Word occurences
@@ -41,7 +40,6 @@ def calculate_chisquared(n, text_author, text_unknown):
             * (anon_count - expected_anon_count)
             / expected_anon_count
         )
-
     return chisquared
 
 

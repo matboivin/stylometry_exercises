@@ -6,6 +6,8 @@
 
 # Utils import
 import sys
+from constants import CATEGORIES
+from utils import print_usage
 
 # Data utils import
 from load_data import tokenize_corpus
@@ -15,10 +17,6 @@ from load_data import sort_files_per_category
 from word_spectrum import compute_word_spectrum
 from chisquared import chi_square_test
 from delta_method import apply_delta_method
-
-# Utils import
-from constants import CATEGORIES
-from utils import print_usage
 
 
 ## FUNCTIONS
@@ -48,7 +46,7 @@ def main(argv):
         # Third approach: John Burrows' Delta Method
         else:
             print("John Burrows' Delta Method")
-            apply_delta_method(30, tokens, CATEGORIES[:-1])
+            apply_delta_method(30, tokens, CATEGORIES, CATEGORIES[-1:])
 
 
 if __name__ == "__main__":
