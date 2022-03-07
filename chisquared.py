@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Kilgariff’s Chi-Squared Method
 
-__all__ = ["get_n_frequent_words", "chi_square_test"]
+__all__ = ["get_n_most_frequent_words", "chi_square_test"]
 
 ### IMPORT
 
@@ -15,11 +15,11 @@ from constants import CORPUS_LANGUAGE
 
 ## FUNCTIONS
 
-def get_n_frequent_words(n, corpus):
+def get_n_most_frequent_words(n, corpus):
     """Get the n most frequent words from a corpus"""
     fdist = nltk.FreqDist(corpus)
-    frequent_words = fdist.most_common(n)
-    return frequent_words
+    most_frequent_words = fdist.most_common(n)
+    return most_frequent_words
 
 def calculate_chisquared(n, text_author, text_unknown):
     """Calculate Chi-Squared to determine the author of an anonymous text
@@ -31,10 +31,10 @@ def calculate_chisquared(n, text_author, text_unknown):
     """
     chisquared = 0
     joint_corpus = (text_author + text_unknown)
-    frequent_words = get_n_frequent_words(n, joint_corpus)
+    most_frequent_words = get_n_most_frequent_words(n, joint_corpus)
     author_share = (len(text_author) / len(joint_corpus))
 
-    for word,count in frequent_words:
+    for word,count in most_frequent_words:
         # Word occurences
         author_count = text_author.count(word)
         anon_count = text_unknown.count(word)

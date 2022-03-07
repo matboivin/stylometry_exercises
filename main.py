@@ -12,7 +12,7 @@ from load_data import tokenize_corpus
 
 # Analysis functions import
 from word_spectrum import compute_word_spectrum
-from chisquare import chi_square_test
+from chisquared import chi_square_test
 
 
 ## FUNCTIONS
@@ -41,8 +41,8 @@ def main(argv):
             chi_square_test(500, corpus["hamilton"], corpus["madison"], corpus["disputed"])
 
         # Third approach: John Burrows' Delta Method
-        #else:
-            #print("John Burrows' Delta Method")
+        else:
+            print("John Burrows' Delta Method")
 
 
 if __name__ == "__main__":
