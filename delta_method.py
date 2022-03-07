@@ -6,7 +6,7 @@ __all__ = ["get_feature_freqs", "get_feature_stats", "get_feature_zscores", "app
 
 ### IMPORT
 
-# Python librairies import
+# Math utils import
 from math import fabs
 from statistics import mean
 from statistics import stdev
