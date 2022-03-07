@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Mendenhall’s Characteristic Curves of Composition
+# Mendenhall's Characteristic Curves of Composition
 
 __all__ = ["compute_word_spectrum"]
 

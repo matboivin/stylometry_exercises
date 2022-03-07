@@ -70,7 +70,7 @@ def tokenize_corpus(corpus):
         )
         tokens = tokens[1:] # Remove the number at the beginning of the document
         tokens = [token.lower() for token in tokens]
-        #result[category] = remove_stopwords(CORPUS_LANGUAGE, tokens)
+        result[category] = remove_stopwords(CORPUS_LANGUAGE, tokens)
         result[category] = tokens
 
     return result

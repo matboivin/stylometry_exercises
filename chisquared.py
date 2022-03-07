@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-# Kilgariff’s Chi-Squared Method
+# Kilgariff's Chi-Squared Method
 
-__all__ = ["chi_square_test"]
+__all__ = ["calculate_chisquared", "chi_square_test"]
 
 ### IMPORT
 
 # Utils import
+from operator import itemgetter
 from utils import get_n_most_frequent_words_occs
 
 
@@ -43,13 +44,16 @@ def calculate_chisquared(n, text_author, text_unknown):
     return chisquared
 
 
-def chi_square_test(n, hamilton_papers, madison_papers, disputed):
+def chi_square_test(n, tokens, author1, author2, unknown):
     """Calculate Chi-Squared to determine the author of the disputed papers.
        The smallest distance between the disputed papers and one of the authors
        means the latest is probably the author of the disputed papers.
     """
-    hamilton_chisquared = calculate_chisquared(n, hamilton_papers, disputed)
-    madison_chisquared = calculate_chisquared(n, madison_papers, disputed)
+    chisquared = dict()
+    chisquared[author1] = calculate_chisquared(n, tokens[author1], tokens[unknown])
+    chisquared[author2] = calculate_chisquared(n, tokens[author2], tokens[unknown])
 
-    print(f"The Chi-squared statistic for Hamilton is {hamilton_chisquared}")
-    print(f"The Chi-squared statistic for Madison is {madison_chisquared}")
+    chisquared = dict(sorted(chisquared.items(), key=itemgetter(1)))
+
+    for k,v in chisquared.items():
+        print(f"The Chi-squared statistic for {k} papers is: {v}")

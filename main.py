@@ -35,17 +35,17 @@ def main(argv):
 
         # First approach: Mendenhall's Characteristic Curves of Composition
         if argv[1] == "1":
-            print("Mendenhall's Characteristic Curves of Composition")
+            print("Mendenhall's Characteristic Curves of Composition\n--------------------------")
             compute_word_spectrum(tokens)
 
         # Second approach: Kilgariff's Chi-Squared Method
         elif argv[1] == "2":
-            print("Kilgariff's Chi-Squared Method")
-            chi_square_test(500, tokens["hamilton"], tokens["madison"], tokens["disputed"])
+            print("Kilgariff's Chi-Squared Method\n--------------------------")
+            chi_square_test(500, tokens, "hamilton", "madison", "disputed")
 
         # Third approach: John Burrows' Delta Method
         else:
-            print("John Burrows' Delta Method")
+            print("John Burrows' Delta Method\n--------------------------")
             apply_delta_method(30, tokens, CATEGORIES, CATEGORIES[-1:])
 
 
