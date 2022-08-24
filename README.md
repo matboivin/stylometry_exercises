@@ -2,6 +2,19 @@
 
 Determine authorship in Python.
 
+## Requirements
+
+* Python 3.9 or greater
+* [`poetry`](https://python-poetry.org/)
+
+## Installation
+
+Clone the repository and change it to your working directory.
+
+```console
+$ poetry install
+```
+
 ## Usage
 
 ```console

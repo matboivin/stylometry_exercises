@@ -1,0 +1,57 @@
+[tool.poetry]
+name = "stylometer"
+version = "1.0.0"
+description = "Determine authorship in Python."
+authors = ["mboivin <mboivin@student.42.fr>"]
+readme = "README.md"
+repository = "https://gitlab.com/mboivin/stylometry_exercises"
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.9"
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+matplotlib = "^3.5.3"
+nltk = "^3.7"
+
+[tool.poetry.dev-dependencies]
+bandit = "^1.7.4"
+black = "^22.6.0"
+isort = "^5.10.1"
+pre-commit = "^2.20.0"
+pycodestyle = "^2.9.1"
+pylint = "^2.14.5"
+
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+pretty = true
+show_traceback = true
+color_output = true
+strict = true
+ignore_missing_imports = true
+allow_untyped_decorators = true
+allow_subclassing_any = true
+
+[tool.poetry.scripts]
+stylometer = 'stylometer.main:entrypoint'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

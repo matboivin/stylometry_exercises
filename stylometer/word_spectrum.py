@@ -1,10 +1,10 @@
-"""Mendenhall's Characteristic Curves of Composition"""
+"""Mendenhall's Characteristic Curves of Composition."""
 
 from typing import Dict, List
 
-from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import Figure
+from nltk.probability import FreqDist
 
 from .constants import CATEGORIES, OUTPUT_DIR
 

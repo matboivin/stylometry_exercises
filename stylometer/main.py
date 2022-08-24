@@ -3,14 +3,12 @@
 from argparse import Namespace
 from typing import Dict, List
 
-from .constants import CATEGORIES
-from .helpers import parse_args
-
-from .load_data import tokenize_corpus, sort_files_per_category
-
-from .word_spectrum import compute_word_spectrum
 from .chisquared import chi_square_test
+from .constants import CATEGORIES
 from .delta_method import apply_delta_method
+from .helpers import parse_args
+from .load_data import sort_files_per_category, tokenize_corpus
+from .word_spectrum import compute_word_spectrum
 
 
 def main(method_number: int) -> None:
@@ -38,7 +36,7 @@ def main(method_number: int) -> None:
         chi_square_test(500, tokens, "hamilton", "madison", "disputed")
 
     # Third approach: John Burrows' Delta Method
-    else:
+    elif method_number == 3:
         apply_delta_method(30, tokens, CATEGORIES[:-1], CATEGORIES[-1])
 
 

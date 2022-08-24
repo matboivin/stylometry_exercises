@@ -1,140 +1,155 @@
-"""John Burrows' Delta Method in order to compare Federalist 64, the special
-case, to other categories
+"""John Burrows' Delta Method.
+
+Compare Federalist 64, the special case, to other categories
 """
 
-from operator import itemgetter
-from typing import Dict, List
-
 from math import fabs
-from statistics import mean
-from statistics import stdev
-from statistics import NormalDist
+from operator import itemgetter
+from statistics import NormalDist, mean, stdev
+from typing import Dict, List, Tuple
 
 from .helpers import get_n_most_frequent_words_occs
 
 
-def get_feature_freqs(tokens: Dict[str, List[str]], features,
-                      categories: List[str]):
+def get_feature_freqs(
+    tokens: Dict[str, List[str]], categories: List[str], features: List[str]
+) -> Dict[str, Dict[str, float]]:
     """Calculate frequencies of each feature in each category.
 
     Parameters
     ----------
     tokens : Dict of str and list of str
         The tokenized corpus.
-    features
-        The selected features.
     categories : list of str
         The categories of the features.
+    features : list of str
+        The selected features.
 
     Returns
     -------
-    dict
+    dict of str, dict of str, float
         The frequencies of each feature in each category.
 
     """
-    feature_freqs = dict()
+    feature_freqs: Dict[str, Dict[str, float]] = {}
 
     for category in categories:
-        feature_freqs[category] = dict()
-        tokens_count = len(tokens[category])
+        feature_freqs[category] = {}
+        tokens_count: int = len(tokens[category])
 
         for feature in features:
-            feature_count = tokens[category].count(feature)
+            feature_count: int = tokens[category].count(feature)
             feature_freqs[category][feature] = feature_count / tokens_count
 
     return feature_freqs
 
 
-def get_feature_stats(features, categories: List[str], freqs):
+def get_feature_stats(
+    categories: List[str],
+    features: List[str],
+    freqs: Dict[str, Dict[str, float]],
+) -> Dict[str, Dict[str, float]]:
     """Calculate the mean and standard deviation for each feature.
 
     Parameters
     ----------
-    features
-        The selected features.
     categories : list of str
         The categories of the features.
-    freqs
+    features : list of str
+        The selected features.
+    freqs : dict of str, dict of str, float
         The frequencies of each feature.
 
     Returns
     -------
-    dict
+    dict of str, dict of str, float
         The mean and standard deviation for each feature.
 
     """
-    corpus_stats = dict()
+    corpus_stats: Dict[str, Dict[str, float]] = {}
 
     for feature in features:
-        corpus_stats[feature] = dict()
+        corpus_stats[feature] = {}
 
         corpus_stats[feature]["mean"] = mean(
-            [freqs[category][feature] for category in categories])
+            [freqs[category][feature] for category in categories]
+        )
         corpus_stats[feature]["stdev"] = stdev(
-            [freqs[category][feature] for category in categories])
+            [freqs[category][feature] for category in categories]
+        )
 
     return corpus_stats
 
 
-def get_feature_zscores(features, categories: List[str], stats, freqs):
+def get_feature_zscores(
+    features: List[str],
+    categories: List[str],
+    freqs: Dict[str, Dict[str, float]],
+    stats: Dict[str, Dict[str, float]],
+) -> Dict[str, Dict[str, float]]:
     """Apply z-score to each feature in each category.
 
     Parameters
     ----------
-    features
+    features : list of str
         The selected features.
     categories : list of str
         The categories of the features.
-    stats
-        The mean and standard deviation for each feature.
-    freqs
+    freqs : dict of str, dict of str, float
         The frequencies of each feature.
+    stats : dict of str, dict of str, float
+        The mean and standard deviation for each feature.
 
     Returns
     -------
-    dict
+    dict of str, dict of str, float
         The z-score for each feature.
 
     """
-    feature_zscores = dict()
+    feature_zscores: Dict[str, Dict[str, float]] = {}
 
     for category in categories:
-        feature_zscores[category] = dict()
+        feature_zscores[category] = {}
 
         for feature in features:
-            feature_zscore = NormalDist(stats[feature]["mean"],
-                                        stats[feature]["stdev"]).zscore(
-                                            freqs[category][feature])
+            feature_zscore: float = NormalDist(
+                stats[feature]["mean"], stats[feature]["stdev"]
+            ).zscore(freqs[category][feature])
             feature_zscores[category][feature] = feature_zscore
 
     return feature_zscores
 
 
-def calculate_delta_scores(features, categories, zscores, specialcase):
+def calculate_delta_scores(
+    categories: List[str],
+    features: List[str],
+    zscores: Dict[str, Dict[str, float]],
+    specialcase: Dict[str, float],
+) -> Dict[str, float]:
     """Calculate Delta scores for each category.
 
     Parameters
     ----------
-    features
-        The selected features.
-    categories
+    categories : list of str
         The categories of the features.
-    zscores
+    features : list of str
+        The selected features.
+    zscores : dict of str, dict of str, float
         z-scores of all categories except the special case.
-    specialcase
+    specialcase : dict of str, float
         z-scores of the special case.
 
     Returns
     -------
-    dict
+    dict of str, float
         The Delta scores for each feature.
 
     """
-    delta = dict()
-    feature_count = len(features)
+    delta: Dict[str, float] = {}
+    feature_count: int = len(features)
 
     for category in categories:
-        score = [
+        score: List[float] = [
             fabs(specialcase[feature] - zscores[category][feature])
             for feature in features
         ]
@@ -142,8 +157,12 @@ def calculate_delta_scores(features, categories, zscores, specialcase):
     return dict(sorted(delta.items(), key=itemgetter(1)))
 
 
-def apply_delta_method(n: int, tokens: Dict[str, List[str]],
-                       categories: List[str], special_case: str) -> None:
+def apply_delta_method(
+    n: int,
+    tokens: Dict[str, List[str]],
+    categories: List[str],
+    special_case: str,
+) -> None:
     """Apply John Burrows' Delta Method.
 
     Parameters
@@ -158,28 +177,38 @@ def apply_delta_method(n: int, tokens: Dict[str, List[str]],
         The name of the special case category.
 
     """
-    combined_corpus = list()
-
-    # Select the most frequent tokens to be used as features
+    combined_corpus: List[str] = []
     for category in categories:
         combined_corpus += tokens[category]
-    words_occs = get_n_most_frequent_words_occs(n, combined_corpus)
-    features = [word for word, count in words_occs]
 
-    feature_freqs = get_feature_freqs(tokens, features, categories)
-    corpus_stats = get_feature_stats(features, categories, feature_freqs)
-    feature_zscores = get_feature_zscores(features, categories, corpus_stats,
-                                          feature_freqs)
+    # Select the most frequent tokens to be used as features
+    words_occs: List[Tuple[str, int]] = get_n_most_frequent_words_occs(
+        n, combined_corpus
+    )
+    features: List[str] = [word for word, count in words_occs]
 
-    special_freqs = get_feature_freqs(tokens, features, list(special_case))
-    special_zscores = get_feature_zscores(features, list(special_case),
-                                          corpus_stats, special_freqs)
+    feature_freqs: Dict[str, Dict[str, float]] = get_feature_freqs(
+        tokens, categories, features
+    )
+    corpus_stats: Dict[str, Dict[str, float]] = get_feature_stats(
+        categories, features, feature_freqs
+    )
+    feature_zscores: Dict[str, Dict[str, float]] = get_feature_zscores(
+        features, categories, feature_freqs, corpus_stats
+    )
+
+    special_freqs: Dict[str, Dict[str, float]] = get_feature_freqs(
+        tokens, [special_case], features
+    )
+    special_zscores: Dict[str, Dict[str, float]] = get_feature_zscores(
+        features, [special_case], special_freqs, corpus_stats
+    )
 
     # The first entry will be the lowest score and thus, the most likely author
     # of Federalist 64
-    delta_scores = calculate_delta_scores(features, categories,
-                                          feature_zscores,
-                                          special_zscores[special_case])
+    delta_scores: Dict[str, float] = calculate_delta_scores(
+        categories, features, feature_zscores, special_zscores[special_case]
+    )
 
-    for k, v in delta_scores.items():
-        print(f"The Delta score for {k} papers is: {v}")
+    for category, score in delta_scores.items():
+        print(f"The Delta score for {category} papers is: {score}")
